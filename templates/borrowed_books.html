@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}Borrowed Books{% endblock %}
+
+{% block body %}
+<h2>Borrowed Books</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Book</th>
+            <th>Borrow Date</th>
+            <th>Return Date</th>
+            {% if session["role"] == 'admin'%}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for r in rows %}
+    <tr>
+        <td>{{ r.username }}</td>
+        <td>{{ r.title }}</td>
+        <td>{{ r.borrow_date }}</td>
+        <td>
+            {% if r.return_date %}
+                {{ r.return_date }}
+            {% else %}
+                <span class="text-danger">Not returned</span>
+            {% endif %}
+        </td>
+
+        <td>
+            {% if session["role"] == "admin" and not r.return_date %}
+            <form method="post" style="display:inline;">
+                <input type="hidden" name="return_id" value="{{ r.id }}">
+                <button class="btn btn-success btn-sm">Return</button>
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}Edit Book{% endblock %}
+
+{% block body %}
+<div class="auth-box">
+    <h3 class="text-center mb-3" style="color:#2E4F4F;">Edit Book</h3>
+
+   <form action="/admin/books/edit/{{ book.id }}" method="post">
+
+        <input name="title" class="form-control my-2" value="{{ book.title }}" placeholder="Title">
+
+        <input name="author" class="form-control my-2" value="{{ book.author_name }}" placeholder="Author">
+
+        <input name="genre" class="form-control my-2" value="{{ book.genre_name }}" placeholder="Genre">
+
+        <input name="stock" type="number" class="form-control my-2" value="{{ book.stock }}" placeholder="Stock">
+
+        <input name="buy_price" type="number" step="0.01" class="form-control my-2" value="{{ book.buy_price }}" placeholder="Buy Price">
+
+        <input name="borrow_fee" type="number" step="0.01" class="form-control my-2" value="{{ book.borrow_fee }}" placeholder="Borrow Fee">
+
+        <select name="status" class="form-control my-2">
+            <option value="active" {% if book.status == 'active' %}selected{% endif %}>Active</option>
+            <option value="suspended" {% if book.status == 'suspended' %}selected{% endif %}>Suspended</option>
+        </select>
+
+        <button class="btn btn-library w-100 mt-3" >Save Changes</button>
+    </form>
+</div>
+{% endblock %}

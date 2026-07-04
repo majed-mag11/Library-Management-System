@@ -1,0 +1,121 @@
+/* NAVBAR THEME */
+.custom-navbar {
+    background-color: #2E4F4F; /* Dark forest green */
+    border-bottom: 4px solid #A27B5C; /* Warm brown accent */
+}
+
+.custom-navbar .nav-link {
+    color: #DCD7C9 !important; /* Light sand */
+    font-weight: 500;
+}
+
+.custom-navbar .nav-link:hover {
+    color: #A27B5C !important; /* Brown hover */
+}
+
+.custom-navbar .navbar-brand {
+    font-weight: bold;
+    color: #F5F5F5 !important; /* Cream white */
+}
+
+.navbar-toggler {
+    border-color: #A27B5C;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(220,215,201, 0.9)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+/* FORM CONTAINER */
+.auth-box {
+    max-width: 420px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #F5F5F5; /* cream */
+    border-radius: 10px;
+    border: 2px solid #A27B5C; /* brown */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* INPUTS */
+.auth-box input {
+    border: 2px solid #A27B5C;
+    background-color: #DCD7C9; /* sand */
+    color: #2E4F4F; /* dark green */
+}
+
+.auth-box input:focus {
+    border-color: #2E4F4F;
+    box-shadow: 0 0 5px rgba(46,79,79,0.5);
+}
+
+/* BUTTONS */
+.btn-library {
+    background-color: #2E4F4F; /* dark green */
+    color: #F5F5F5;
+    border: 2px solid #A27B5C;
+    font-weight: 600;
+}
+
+.btn-library:hover {
+    background-color: #A27B5C; /* brown */
+    color: #F5F5F5;
+    border-color: #2E4F4F;
+}
+/* STOCK TABLE */
+.stock-table {
+    background-color: #F5F5F5;
+    border: 2px solid #A27B5C;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.stock-table th {
+    background-color: #2E4F4F;
+    color: #F5F5F5;
+    font-weight: 600;
+}
+
+.stock-table td {
+    background-color: #DCD7C9;
+    color: #2E4F4F;
+    border-bottom: 2px solid #A27B5C;
+}
+
+.stock-table tr:hover td {
+    background-color: #A27B5C;
+    color: #F5F5F5;
+}
+
+/* STATUS COLORS */
+.status-active {
+    color: #2E4F4F;
+    font-weight: bold;
+}
+
+.status-suspended {
+    color: #8B0000;
+    font-weight: bold;
+}
+
+/* ACTION BUTTONS */
+.btn-edit {
+    background-color: #2E4F4F;
+    color: #F5F5F5;
+    border: 2px solid #A27B5C;
+}
+
+.btn-edit:hover {
+    background-color: #A27B5C;
+    color: #F5F5F5;
+}
+
+.btn-suspend {
+    background-color: #8B0000;
+    color: white;
+    border: 2px solid #2E4F4F;
+}
+
+.btn-suspend:hover {
+    background-color: #2E4F4F;
+    color: white;
+}

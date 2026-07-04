@@ -1,0 +1,164 @@
+{% extends "layout.html" %}
+
+{% block title %}Books Stock{% endblock %}
+
+{% block body %}
+<h2 class="mb-4" style="color:#2E4F4F;">Books Stock</h2>
+
+<input id="search" class="form-control my-3" placeholder="Search for a book...">
+
+<div id="results"></div>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <select id="filter-genre" class="form-control">
+            <option value="">All Genres</option>
+            {% for g in genres %}
+                <option value="{{ g.name }}">{{ g.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <select id="filter-author" class="form-control">
+            <option value="">All Authors</option>
+            {% for a in authors %}
+            <option value="{{ a.name }}">{{ a.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <select id="filter-status" class="form-control">
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="suspended">Suspended</option>
+        </select>
+    </div>
+</div>
+
+<div class="stock-table table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Price</th>
+                <th>Borrow Fees</th>
+                <th>Stock</th>
+                <th>Status</th>
+
+                {% if session.get("role") == "admin" %}
+                <th>Actions</th>
+
+                {% else %}
+                <th>Borrow</th>
+                {% endif %}
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>{{ book.genre }}</td>
+                <td>{{ book.buy_price }}</td>
+                <td>{{ book.borrow_fee }}</td>
+                <td>{{ book.stock }}</td>
+
+                <td>
+                    {% if book.status == 'active' %}
+                        <span class="status-active">Active</span>
+                    {% else %}
+                        <span class="status-suspended">Suspended</span>
+                    {% endif %}
+                </td>
+
+                {% if session.get("role") == "admin" %}
+                <td>
+                    <a href="/admin/books/edit/{{ book.id }}" class="btn btn-edit btn-sm">Edit</a>
+                    <a href="/admin/books/suspend/{{ book.id }}" class="btn btn-suspend btn-sm">Suspend</a>
+                </td>
+                {% else %}
+                    <td>
+                    {% if book.status == 'active' and book.stock > 0 %}
+                        <a href="/borrow/{{ book.id }}" class="btn btn-edit btn-sm">Borrow</a>
+                    {% else %}
+                        <span class="text-muted">Unavailable</span>
+                    {% endif %}
+                    </td>
+                {% endif %}
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput = document.getElementById("search");
+    const genreFilter = document.getElementById("filter-genre");
+    const authorFilter = document.getElementById("filter-author");
+    const statusFilter = document.getElementById("filter-status");
+    const resultsDiv = document.getElementById("results");
+
+    function updateResults() {
+        let q = searchInput.value.trim();
+        let genre = genreFilter.value;
+        let author = authorFilter.value;
+        let status = statusFilter.value;
+
+        // Hide suggestions if empty
+        if (q.length === 0) {
+            resultsDiv.innerHTML = "";
+            resultsDiv.style.display = "none";
+            return;
+        }
+
+        fetch(`/search_books?q=${q}&genre=${genre}&author=${author}&status=${status}`)
+            .then(response => response.json())
+            .then(data => {
+                resultsDiv.innerHTML = "";
+                resultsDiv.style.display = "block";
+
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = `<div class="list-group-item">No results found</div>`;
+                    return;
+                }
+
+                data.forEach(book => {
+                    resultsDiv.innerHTML += `
+                        <button class="list-group-item list-group-item-action suggestion-item"
+                                data-title="${book.title}">
+                            <strong>${book.title}</strong> — ${book.author}
+                        </button>
+                    `;
+                });
+
+                // Click-to-fill
+                document.querySelectorAll(".suggestion-item").forEach(item => {
+                    item.addEventListener("click", function () {
+                        searchInput.value = this.dataset.title;
+                        resultsDiv.innerHTML = "";
+                        resultsDiv.style.display = "none";
+                    });
+                });
+            });
+    }
+
+    // Trigger search on typing or filter change
+    searchInput.addEventListener("input", updateResults);
+    genreFilter.addEventListener("change", updateResults);
+    authorFilter.addEventListener("change", updateResults);
+    statusFilter.addEventListener("change", updateResults);
+
+});
+</script>
+
+
+
+{% endblock %}

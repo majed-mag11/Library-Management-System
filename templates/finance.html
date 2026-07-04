@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block title %}Finance{% endblock %}
+
+{% block body %}
+<h2>Finance Report</h2>
+
+<div class="d-flex justify-content-between mb-3">
+    <!-- Left corner: filters -->
+    <form method="GET" class="form-inline">
+        <label for="period">Period:</label>
+        <select name="period" id="period" onchange="this.form.submit()">
+            <option value="daily" {% if period == 'daily' %}selected{% endif %}>Daily</option>
+            <option value="monthly" {% if period == 'monthly' %}selected{% endif %}>Monthly</option>
+            <option value="all" {% if period == 'all' %}selected{% endif %}>All Time</option>
+        </select>
+
+        {% if period == 'monthly' %}
+        <input type="month" name="month" value="{{ month }}" onchange="this.form.submit()">
+        {% endif %}
+
+        <label for="type">Type:</label>
+        <select name="type" id="type" onchange="this.form.submit()">
+            <option value="all" {% if trans_type == 'all' %}selected{% endif %}>All</option>
+            <option value="borrow" {% if trans_type == 'borrow' %}selected{% endif %}>Borrow</option>
+            <option value="sell" {% if trans_type == 'sell' %}selected{% endif %}>Sell</option>
+        </select>
+    </form>
+
+    <!-- Right corner: total money -->
+    <h4>Total: {{ total_money or 0 }}</h4>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Book</th>
+            <th>Transaction Type</th>
+            <th>Borrow Date</th>
+            <th>Return Date</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in rows %}
+        <tr>
+            <td>{{ r.username }}</td>
+            <td>{{ r.title }}</td>
+            <td>{{ r.transaction_type }}</td>
+            <td>{{ r.borrow_date }}</td>
+            <td>{{ r.return_date or '---' }}</td>
+            <td>
+                {% if r.transaction_type == 'borrow' %}
+                    {{ r.borrow_fee }}
+                {% else %}
+                    {{ r.buy_price }}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
